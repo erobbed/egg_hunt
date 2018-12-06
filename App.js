@@ -20,7 +20,7 @@ export default class App extends React.Component {
     await Font.loadAsync({ amazon: require("./assets/fonts/Lato-Black.ttf") });
     this.setState({ fontLoaded: true });
     this._getLocationAsync();
-    this._retrieveData();
+    this._retrieveLocation();
   }
 
   _getLocationAsync = async () => {
@@ -56,7 +56,7 @@ export default class App extends React.Component {
 
     if (withinRange(lat, lon, locationLat, locationLon, distance)) {
       if (locations.length - 1 > this.state.locationIndex) {
-        this._storeData(this.state.locationIndex + 1);
+        this._setLocation(this.state.locationIndex + 1);
         this.nextClue();
       } else {
         this.setState({
@@ -66,33 +66,36 @@ export default class App extends React.Component {
     }
   };
 
-  nextClue = () => {
+  nextClue = async () => {
     _foundSound();
-    this.setState({
-      locationIndex: this.state.locationIndex + 1
-    });
+    await this._setLocation(this.state.locationIndex + 1)
+    this._retrieveLocation()
   };
 
-  handleClick = () => {
-    this._storeData(0);
-  };
-
-  _retrieveData = async () => {
+  _retrieveLocation = async () => {
     try {
       const locationIndex = await AsyncStorage.getItem("LOCATIONINDEX");
       if (locationIndex !== null) {
+        locationIndex = +locationIndex
         this.setState({
           locationIndex
         });
+      } else {
+        this._reset()
       }
     } catch (error) {
       this.setState({ errorMessage: error.message });
     }
   };
 
-  _storeData = async locationIndex => {
+  _reset = async () => {
+    await this._setLocation(0);
+    this._retrieveLocation();
+  }
+
+  _setLocation = async locationIndex => {
     try {
-      await AsyncStorage.setItem("LOCATIONINDEX", locationIndex);
+      await AsyncStorage.setItem("LOCATIONINDEX", `${locationIndex}`);
     } catch (error) {
       this.setState({ errorMessage: error.message });
     }
@@ -114,7 +117,7 @@ export default class App extends React.Component {
           {fontLoaded ? <Text style={styles.subheader}>by</Text> : null}
           <Logo />
         </View>
-        <View>
+        <View style={styles.clue}>
           <Text style={styles.content}>
             {locationIndex === 0 ? "" : locations[locationIndex - 1].message}
           </Text>
@@ -122,8 +125,7 @@ export default class App extends React.Component {
           <Text style={styles.content}>
             Distance to pin: {Math.floor(this.state.distance * 1000)} meters
           </Text>
-          <Button onPress={this.handleClick} title="start" />
-          <Button onPress={this._retrieveData} title="stop" />
+          <Button onPress={this._reset} title="reset" />
         </View>
       </View>
     );

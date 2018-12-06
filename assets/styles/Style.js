@@ -28,6 +28,17 @@ export const styles = StyleSheet.create({
     marginRight: "auto",
     marginBottom: 0,
     marginLeft: "auto",
-    color: "rgb(139, 144, 148)"
+    color: "black"
+  },
+  clue: {
+    shadowOffset:{  width: 5,  height: 5,  },
+    shadowColor: 'black',
+    shadowOpacity: 1.0,
+    width: 300,
+    height: 200,
+    backgroundColor: 'lightgray',
+    borderRadius: 45,
+    borderColor: 'rgb(255,142,5)',
+    borderWidth: 3
   }
 });
