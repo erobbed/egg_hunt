@@ -18,7 +18,8 @@ import { locations, action } from "./utility/locations";
 export default class App extends React.Component {
   state = {
     locationIndex: 0,
-    message: "",
+    message:
+      "A lily in one hand, the other outstretched, these healing waters I have blessed. This one's easy, it's up to you to find the rest...",
     distance: 0,
     fontLoaded: false
   };
@@ -28,6 +29,14 @@ export default class App extends React.Component {
     this.setState({ fontLoaded: true });
     this._fetchLocationAsync();
     this._getLocation();
+  }
+
+  async componentWillUnmount() {
+    let location = await Location.watchPositionAsync(
+      locationOptions,
+      this.checkPosition
+    );
+    location.remove();
   }
 
   _fetchLocationAsync = async () => {
