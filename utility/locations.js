@@ -35,6 +35,6 @@ export const locations = [
     latitude: 40.766902,
     longitude: -73.976511,
     distance: 10,
-    message: "Behind you, Shannyn..."
+    message: "Turn around, Shannyn..."
   }
 ];

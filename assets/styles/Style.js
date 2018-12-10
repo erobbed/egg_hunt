@@ -7,7 +7,7 @@ export const styles = StyleSheet.create({
     backgroundColor: "rgb(35, 47, 61)"
   },
   header: {
-    fontSize: 40,
+    fontSize: 45,
     marginTop: 100,
     marginBottom: 0,
     fontFamily: "amazon",
@@ -23,12 +23,21 @@ export const styles = StyleSheet.create({
     marginBottom: 5
   },
   content: {
+    position: "absolute",
+    top: 15,
+    width: 175,
+    marginLeft: 20,
+    marginRight: 10,
+    marginBottom: 0,
     textAlign: "left",
-    // marginTop: 0,
-    marginRight: "auto",
-    // marginBottom: 0,
-    marginLeft: "auto",
-    color: "black"
+    color: "black",
+    fontFamily: "AmericanTypewriter"
+  },
+  subcontent: {
+    top: 150,
+    position: "absolute",
+    marginLeft: 20,
+    fontFamily: "AmericanTypewriter-Bold"
   },
   clue: {
     shadowOffset: { width: 5, height: 5 },
