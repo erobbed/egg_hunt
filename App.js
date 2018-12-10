@@ -12,8 +12,9 @@ import { Location, Permissions, Font } from "expo";
 import { _foundSound } from "./utility/action.js";
 import { Logo } from "./Logo";
 import { styles } from "./assets/styles/Style";
-import { withinRange, calculateDistance } from "./utility/distance";
+import { withinRange, calculateDistance, getBearing } from "./utility/distance";
 import { locations, action } from "./utility/locations";
+import CompassContainer from "./CompassContainer";
 
 export default class App extends React.Component {
   state = {
@@ -21,7 +22,8 @@ export default class App extends React.Component {
     message:
       "A lily in one hand, the other outstretched, these healing waters I have blessed. This one's easy, it's up to you to find the rest...",
     distance: 0,
-    fontLoaded: false
+    fontLoaded: false,
+    bearing: 0
   };
 
   async componentDidMount() {
@@ -67,7 +69,8 @@ export default class App extends React.Component {
     const distance = locations[this.state.locationIndex].distance;
 
     this.setState({
-      distance: calculateDistance(lat, lon, locationLat, locationLon)
+      distance: calculateDistance(lat, lon, locationLat, locationLon),
+      bearing: getBearing(lat, lon, locationLat, locationLon)
     });
 
     if (withinRange(lat, lon, locationLat, locationLon, distance)) {
@@ -118,7 +121,7 @@ export default class App extends React.Component {
   };
 
   render() {
-    let { locationIndex, fontLoaded } = this.state;
+    let { locationIndex, fontLoaded, bearing, distance } = this.state;
     return (
       <View style={styles.container}>
         <View>
@@ -134,9 +137,9 @@ export default class App extends React.Component {
           <Text style={styles.content}>
             {locationIndex === 0 ? "" : locations[locationIndex - 1].message}
           </Text>
+          <CompassContainer bearing={bearing} />
           <Text style={styles.content}>
-            Distance to next pin: {Math.floor(this.state.distance * 1000)}{" "}
-            meters
+            Distance to next pin: {Math.floor(distance * 1000)} meters
           </Text>
         </View>
         <Button
