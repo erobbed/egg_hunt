@@ -14,6 +14,7 @@ export default class Compass extends Component {
   constructor() {
     super();
     this.spinValue = new Animated.Value(0);
+    this.bearingValue = new Animated.Value(0);
     this.state = {
       location: null,
       errorMessage: null,
@@ -62,6 +63,13 @@ export default class Compass extends Component {
       duration: 300,
       easing: Easing.easeInOut
     }).start();
+
+    // spin for bearing
+    Animated.timing(this.bearingValue, {
+      toValue: this.props.bearing,
+      duration: 300,
+      easing: Easing.easeInOut
+    }).start();
   }
 
   render() {
@@ -73,6 +81,11 @@ export default class Compass extends Component {
     const spin = this.spinValue.interpolate({
       inputRange: [0, 360],
       outputRange: ["-0deg", "-360deg"]
+    });
+
+    const bearingSpin = this.bearingValue.interpolate({
+        inputRange: [0, 360],
+        outputRange: ["-0deg", "-360deg"]
     });
 
     display = Math.round(JSON.stringify(this.spinValue));
@@ -99,7 +112,13 @@ export default class Compass extends Component {
           <Image
             resizeMode="contain"
             source={require("./assets/arrow.png")}
-            style={styles.arrow}
+            style={{
+                width: deviceWidth - 250,
+                height: deviceHeight / 2 - 250,
+                left: deviceWidth / 2 - (deviceWidth - 200) / 2,
+                top: deviceHeight / 2 - (deviceHeight / 2 + 30),
+                transform: [{ rotate: bearingSpin }]
+            }}
           />
         </View>
       </View>
