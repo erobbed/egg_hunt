@@ -88,9 +88,9 @@ export default class App extends React.Component {
   nextClue = async () => {
     _foundSound();
     nextLocation =
-      locations.length >= this.state.locationIndex + 1
-        ? this.state.locationIndex + 1
-        : this.state.locationIndex;
+      this.state.locationIndex + 1 > locations.length - 1
+        ? this.state.locationIndex
+        : this.state.locationIndex + 1;
     await this._setLocation(nextLocation);
   };
 
@@ -125,7 +125,7 @@ export default class App extends React.Component {
 
   render() {
     let { locationIndex, fontLoaded, bearing, distance } = this.state;
-    let last = locationIndex >= locations.length;
+    let last = locationIndex >= locations.length - 1;
     return (
       <View style={styles.container}>
         <View>
@@ -142,7 +142,7 @@ export default class App extends React.Component {
           <Text style={styles.content}>
             {locationIndex === 0
               ? this.state.message
-              : locations[locationIndex - 1].message}
+              : locations[locationIndex].message}
           </Text>
           <CompassContainer bearing={bearing} />
           <Text style={styles.subcontent}>
