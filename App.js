@@ -12,7 +12,7 @@ import { Location, Permissions, Font } from "expo";
 import { _foundSound } from "./utility/action.js";
 import { Logo } from "./Logo";
 import { styles } from "./assets/styles/Style";
-import { withinRange, calculateDistance, getBearing } from "./utility/distance";
+import { withinRange, calculateDistance } from "./utility/distance";
 import { locations, action } from "./utility/locations";
 import CompassContainer from "./CompassContainer";
 
@@ -20,10 +20,9 @@ export default class App extends React.Component {
   state = {
     locationIndex: 0,
     message:
-      "A lily in one hand, the other outstretched, these healing waters I have blessed. This one's easy, it's up to you to find the rest...",
+      "A lily in one hand, the other outstretched, these healing waters I have blessed. This one's easy; it's up to you to find the rest...",
     distance: 0,
-    fontLoaded: false,
-    bearing: 0
+    fontLoaded: false
   };
 
   async componentDidMount() {
@@ -69,8 +68,7 @@ export default class App extends React.Component {
     const distance = locations[this.state.locationIndex].distance;
 
     this.setState({
-      distance: calculateDistance(lat, lon, locationLat, locationLon),
-      bearing: getBearing(lat, lon, locationLat, locationLon)
+      distance: calculateDistance(lat, lon, locationLat, locationLon)
     });
 
     if (withinRange(lat, lon, locationLat, locationLon, distance)) {
@@ -87,8 +85,11 @@ export default class App extends React.Component {
 
   nextClue = async () => {
     _foundSound();
-    await this._setLocation(this.state.locationIndex + 1);
-    this._getLocation();
+    nextLocation =
+      locations.length >= this.state.locationIndex + 1
+        ? this.state.locationIndex + 1
+        : this.state.locationIndex;
+    await this._setLocation(nextLocation);
   };
 
   _getLocation = async () => {
@@ -122,12 +123,14 @@ export default class App extends React.Component {
 
   render() {
     let { locationIndex, fontLoaded, bearing, distance } = this.state;
+    let last = locationIndex >= locations.length;
     return (
       <View style={styles.container}>
         <View>
           {fontLoaded ? (
             <Text style={styles.header}>
-              the great <Text onLongPress={this.nextClue}>🥚</Text> hunt{" "}
+              the great{" "}
+              <Text onLongPress={last ? () => {} : this.nextClue}>🥚</Text> hunt{" "}
             </Text>
           ) : null}
           {fontLoaded ? <Text style={styles.subheader}>by</Text> : null}
@@ -135,11 +138,15 @@ export default class App extends React.Component {
         </View>
         <View style={styles.clue}>
           <Text style={styles.content}>
-            {locationIndex === 0 ? "" : locations[locationIndex - 1].message}
+            {locationIndex === 0
+              ? this.state.message
+              : locations[locationIndex - 1].message}
           </Text>
           <CompassContainer bearing={bearing} />
-          <Text style={styles.content}>
-            Distance to next pin: {Math.floor(distance * 1000)} meters
+          <Text style={styles.subcontent}>
+            {last
+              ? null
+              : `Distance to pin: ${Math.floor(distance * 1000)} meters`}
           </Text>
         </View>
         <Button
