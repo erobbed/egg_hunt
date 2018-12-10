@@ -23,7 +23,7 @@ export default class App extends React.Component {
       "A lily in one hand, the other outstretched, these healing waters I have blessed. This one's easy; it's up to you to find the rest...",
     distance: 0,
     fontLoaded: false,
-      bearing: 0
+    bearing: 0
   };
 
   async componentDidMount() {
@@ -53,7 +53,7 @@ export default class App extends React.Component {
     //  distance in meters for how often it will fire
     const locationOptions = {
       enableHighAccuracy: true,
-      distanceInterval: 0
+      distanceInterval: 2
     };
 
     Location.watchPositionAsync(locationOptions, this.checkPosition);

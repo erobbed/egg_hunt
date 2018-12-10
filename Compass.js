@@ -49,6 +49,7 @@ export default class Compass extends Component {
   spin() {
     let start = JSON.stringify(this.spinValue);
     let heading = Math.round(this.state.heading);
+    let bearing = Math.round(this.props.bearing);
 
     let rot = +start;
     let rotM = rot % 360;
@@ -66,7 +67,7 @@ export default class Compass extends Component {
 
     // spin for bearing
     Animated.timing(this.bearingValue, {
-      toValue: this.props.bearing,
+      toValue: rot - this.props.bearing,
       duration: 300,
       easing: Easing.easeInOut
     }).start();
@@ -84,8 +85,8 @@ export default class Compass extends Component {
     });
 
     const bearingSpin = this.bearingValue.interpolate({
-        inputRange: [0, 360],
-        outputRange: ["-0deg", "-360deg"]
+      inputRange: [0, 360],
+      outputRange: ["-0deg", "-360deg"]
     });
 
     display = Math.round(JSON.stringify(this.spinValue));
@@ -109,15 +110,15 @@ export default class Compass extends Component {
           />
         </View>
         <View>
-          <Image
+          <Animated.Image
             resizeMode="contain"
             source={require("./assets/arrow.png")}
             style={{
-                width: deviceWidth - 250,
-                height: deviceHeight / 2 - 250,
-                left: deviceWidth / 2 - (deviceWidth - 200) / 2,
-                top: deviceHeight / 2 - (deviceHeight / 2 + 30),
-                transform: [{ rotate: bearingSpin }]
+              width: deviceWidth - 310,
+              height: deviceHeight / 2 - 310,
+              left: deviceWidth / 2 - (deviceWidth - 200) / 2,
+              top: deviceHeight / 2 - (deviceHeight / 2 + 85),
+              transform: [{ rotate: bearingSpin }]
             }}
           />
         </View>
@@ -135,11 +136,5 @@ const styles = StyleSheet.create({
     // flex: 1,
     alignItems: "center",
     justifyContent: "center"
-  },
-  arrow: {
-    width: deviceWidth / 14,
-    height: deviceWidth / 20,
-    left: deviceWidth / 2 - (deviceWidth - 200) / 2,
-    top: deviceHeight / 2 - (deviceHeight / 2 + 80)
   }
 });
