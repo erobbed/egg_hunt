@@ -3,13 +3,13 @@ import { StyleSheet } from "react-native";
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "rgb(35, 47, 61)",
-    padding: 8
+    backgroundColor: "rgb(35, 47, 61)"
   },
   header: {
     fontSize: 40,
+    marginTop: 100,
+    marginBottom: 0,
     fontFamily: "amazon",
     fontWeight: "bold",
     textAlign: "center",
@@ -24,21 +24,34 @@ export const styles = StyleSheet.create({
   },
   content: {
     textAlign: "left",
-    marginTop: 0,
+    // marginTop: 0,
     marginRight: "auto",
-    marginBottom: 0,
+    // marginBottom: 0,
     marginLeft: "auto",
     color: "black"
   },
   clue: {
-    shadowOffset:{  width: 5,  height: 5,  },
-    shadowColor: 'black',
+    shadowOffset: { width: 5, height: 5 },
+    shadowColor: "black",
     shadowOpacity: 1.0,
     width: 300,
     height: 200,
-    backgroundColor: 'lightgray',
+    top: -60,
+    backgroundColor: "lightgray",
     borderRadius: 45,
-    borderColor: 'rgb(255,142,5)',
-    borderWidth: 3
+    borderColor: "rgb(255,142,5)",
+    borderWidth: 3,
+    justifyContent: "center"
+  },
+  case: {
+    position: "absolute",
+    bottom: 20,
+    right: 20
+  },
+  button: {
+    backgroundColor: "rgb(255,142,5)",
+    width: 30,
+    height: 30,
+    borderRadius: 50
   }
 });
