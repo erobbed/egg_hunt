@@ -20,7 +20,8 @@ export const locations = [
     latitude: 40.769773,
     longitude: -73.975246,
     distance: 10,
-    message: "Wollman's"
+    message:
+      "A simple clue here should suffice, the coldest part of being nice. You're looking for the end of twice, another round and make it thrice."
   },
   {
     //Wollman's
