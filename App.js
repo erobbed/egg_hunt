@@ -19,8 +19,6 @@ import CompassContainer from "./CompassContainer";
 export default class App extends React.Component {
   state = {
     locationIndex: 0,
-    message:
-      "A lily in one hand, the other outstretched, these healing waters I have blessed. This one's easy; it's up to you to find the rest...",
     distance: 0,
     fontLoaded: false,
     bearing: 0
@@ -139,11 +137,7 @@ export default class App extends React.Component {
           <Logo />
         </View>
         <View style={styles.clue}>
-          <Text style={styles.content}>
-            {locationIndex === 0
-              ? this.state.message
-              : locations[locationIndex].message}
-          </Text>
+          <Text style={styles.content}>{locations[locationIndex].message}</Text>
           <CompassContainer bearing={bearing} />
           <Text style={styles.subcontent}>
             {last
